@@ -103,12 +103,8 @@ module.exports = function(webpackEnv) {
       },
     ].filter(Boolean);
     if (preProcessor) {
-      loaders.push({
-        loader: require.resolve(preProcessor),
-        options: {
-          sourceMap: isEnvProduction && shouldUseSourceMap,
-        },
-      });
+      loaders.push(preProcessor);
+      
     }
     return loaders;
   };
@@ -394,6 +390,7 @@ module.exports = function(webpackEnv) {
               use: getStyleLoaders({
                 importLoaders: 1,
                 sourceMap: isEnvProduction && shouldUseSourceMap,
+                camelCase: "dashes"
               }),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
@@ -423,7 +420,13 @@ module.exports = function(webpackEnv) {
                   importLoaders: 2,
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                 },
-                'sass-loader'
+                {
+                  loader: require.resolve('sass-loader'),
+                  options: {
+                    data: `@import "${paths.appSrc}/config/_variables.scss";`,
+                    sourceMap: isEnvProduction && shouldUseSourceMap,
+                  }
+                }
               ),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
@@ -442,8 +445,15 @@ module.exports = function(webpackEnv) {
                   modules: true,
                   getLocalIdent: getCSSModuleLocalIdent,
                 },
-                'sass-loader'
+                {
+                  loader: require.resolve('sass-loader'),
+                  options: {
+                    data: `@import "${paths.appSrc}/config/_variables.scss";`,
+                    sourceMap: isEnvProduction && shouldUseSourceMap,
+                  }
+                }
               ),
+             
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.
