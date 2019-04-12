@@ -425,6 +425,7 @@ module.exports = function(webpackEnv) {
                   options: {
                     data: `@import "${paths.appSrc}/config/_variables.scss";`,
                     sourceMap: isEnvProduction && shouldUseSourceMap,
+                    camelCase: "dashes",
                   }
                 }
               ),
@@ -450,6 +451,7 @@ module.exports = function(webpackEnv) {
                   options: {
                     data: `@import "${paths.appSrc}/config/_variables.scss";`,
                     sourceMap: isEnvProduction && shouldUseSourceMap,
+                    camelCase: "dashes",
                   }
                 }
               ),
